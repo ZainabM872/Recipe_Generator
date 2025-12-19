@@ -16,7 +16,7 @@ export async function fetchRecipes(ingredients: string) {
         }
 
         const data = await response.json();
-        console.log(data);
+        console.log("hello", data);
         return data;
     }
     catch (error) {
