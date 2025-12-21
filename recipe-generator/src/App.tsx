@@ -29,7 +29,14 @@ function App() {
     <div className="pt-28">
       <SearchBar onSearch={onSearch} />
       <RecipeList sendFilteredRecipesToParent={handleFilteredRecipes} searched={hasSearched} allRecipes={recipes} searchIngredients={ingredient} />
-      <RecipeCard recipesToDisplay={filteredRecipes}/>
+
+      {filteredRecipes.length > 0 && (
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-4">
+          {filteredRecipes.map(recipe => (
+            <RecipeCard recipeToDisplay={recipe} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

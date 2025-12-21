@@ -33,22 +33,9 @@ function RecipeList({ sendFilteredRecipesToParent, searched, allRecipes, searchI
 
     return (
         <>
-            {
-                searched && allRecipes.length === 0 &&
-                (
-                    <h2>There are no recipe results for your ingredient list</h2>
-                )
-            }
-            {
-                allRecipes.length > 0 &&
-                (
-                    <ul>
-                        {filteredRecipes.map(r => (
-                            <li key={r.id}>{r.title}</li>
-                        ))}
-                    </ul>
-                )
-            }
+            {searched && allRecipes.length === 0 && (
+                <h2>There are no recipe results for your ingredient list</h2>
+            )}
         </>
     );
 }
