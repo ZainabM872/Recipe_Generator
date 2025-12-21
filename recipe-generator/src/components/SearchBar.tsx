@@ -14,7 +14,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
             if (search.trim().length > 0 && !invalidInput) {
                 onSearch(search);
             }
-            else if (search.length === 0) {
+            else if (search.trim().length === 0) {
                 alert("Please enter at least one ingredient.");
             }
             else if (invalidInput) {
@@ -29,7 +29,7 @@ function SearchBar({ onSearch }: SearchBarProps) {
             <input
                 type="text"
                 value={search}
-                onChange={(e) => setSearch(e.target.value.trim().toLowerCase())}
+                onChange={(e) => setSearch(e.target.value.toLowerCase())}
                 placeholder="Enter ingredients..."
                 className="w-full px-4 py-3 text-lg rounded-lg border-2 border-gray-300 focus:outline-none focus:ring-0 bg-white text-gray-800"
                 onKeyDown={handleKeyPressed}

@@ -11,7 +11,6 @@ export async function fetchRecipes(ingredients: string) {
         `https://api.spoonacular.com/recipes/findByIngredients?${params}`
         );
 
-        // the user input: lowercase and .includes(the name attribute in the api result)
         if (!response.ok) {
         throw new Error(`API error: ${response.status}`);
         }
