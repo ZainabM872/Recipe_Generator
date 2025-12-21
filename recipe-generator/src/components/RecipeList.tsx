@@ -1,21 +1,18 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import type { Recipe } from './types'; // No runtime import will be generated for Recipe.
 
-type Recipe = {
-    id: number;
-    title: string;
-    usedIngredients: { name: string }[];
-    missedIngredients: { name: string }[];
-};
-
+// Define types for the props
 interface RecipeListProps {
+    sendFilteredRecipesToParent: (data: Recipe[]) => void;
     searched: boolean;
     allRecipes: Recipe[];
     searchIngredients: string;
 }
 
-function RecipeList({ searched, allRecipes, searchIngredients }: RecipeListProps) { 
+function RecipeList({ sendFilteredRecipesToParent, searched, allRecipes, searchIngredients }: RecipeListProps) { 
     
-    const filteredallRecipes = useMemo(() => {
+    // Filter recipes based on whether any of the ingredients exist in the name property. useMemo ensures the fltering only happens when the ingredient list or returned recipes change (memoization)
+    const filteredRecipes = useMemo(() => {
         const ingredientList = searchIngredients
             .toLowerCase()
             .split(",")
@@ -29,6 +26,10 @@ function RecipeList({ searched, allRecipes, searchIngredients }: RecipeListProps
         );
     }, [searchIngredients, allRecipes]);
 
+    // Call the parent callback only when filteredRecipes changes
+    useEffect(() => {
+        sendFilteredRecipesToParent(filteredRecipes);
+    }, [filteredRecipes, sendFilteredRecipesToParent]);
 
     return (
         <>
@@ -42,7 +43,7 @@ function RecipeList({ searched, allRecipes, searchIngredients }: RecipeListProps
                 allRecipes.length > 0 &&
                 (
                     <ul>
-                        {filteredallRecipes.map(r => (
+                        {filteredRecipes.map(r => (
                             <li key={r.id}>{r.title}</li>
                         ))}
                     </ul>

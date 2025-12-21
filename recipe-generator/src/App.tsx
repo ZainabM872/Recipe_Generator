@@ -3,12 +3,16 @@ import { fetchRecipes } from './services/spoonacular';
 import './index.css';
 import { useState } from 'react';
 import RecipeList from './components/RecipeList';
+import type { Recipe } from './components/types';
+import RecipeCard from './components/RecipeCard';
 
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [ingredient, setIngredient] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>([]);
 
+  // retrieve results based on the ingredient list
   const onSearch = async (ingredients: string) => {
     setIngredient(ingredients);
     const data = await fetchRecipes(ingredients);
@@ -16,14 +20,16 @@ function App() {
     setHasSearched(true);
   };
 
+  // retrieve and store filtered recipies from RecipeList child component to be passed into the RecipeCard Component
+  const handleFilteredRecipes = (data: Recipe[]) => {
+    setFilteredRecipes(data);
+  }
+
   return (
     <div className="pt-28">
       <SearchBar onSearch={onSearch} />
-      <RecipeList searched={hasSearched} allRecipes={recipes} searchIngredients={ingredient} />
-
-      <div className="p-8">
-        <h1 className="text-3xl ">Recipe Generator</h1>
-      </div>
+      <RecipeList sendFilteredRecipesToParent={handleFilteredRecipes} searched={hasSearched} allRecipes={recipes} searchIngredients={ingredient} />
+      <RecipeCard recipesToDisplay={filteredRecipes}/>
     </div>
   );
 }
